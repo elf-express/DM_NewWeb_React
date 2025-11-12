@@ -26,11 +26,24 @@
 ✅ 帳戶概覽統計 ✅ 包裹入庫管理 ✅ 訂單追蹤查詢  
 ✅ 客服中心 ✅ 快捷操作面板 ✅ 實時數據圖表
 
-## 🏗️ 技術棧
+## 🚀 技術棧
 
-**核心**: React 19 + TypeScript 4.5 + Vite 5  
-**UI**: Tailwind CSS + shadcn/ui + Framer Motion  
-**功能**: i18next + Recharts + Lucide React
+- **框架**: Next.js 16 (App Router) + React 19 + TypeScript
+- **國際化**: next-intl (SSG 支持)
+- **路由**: Next.js App Router with Dynamic Routes
+- **UI 組件**: 
+  - Radix UI (Headless Components)
+    - Dialog/Sheet - 彈窗和側邊抽屜
+    - Checkbox - 複選框
+    - Radio Group - 單選按鈕
+    - Label - 表單標籤
+  - Tailwind CSS
+  - shadcn/ui
+- **動畫**: Framer Motion
+- **圖表**: Recharts
+- **圖標**: Lucide React
+- **表單**: React Hooks (useState)
+- **部署**: GitHub Pages (Static Export)
 
 ## 📁 項目架構
 
@@ -38,11 +51,14 @@
 src/
 ├── components/      # UI組件（ui/common/Dashboard）
 ├── contexts/       # React Context（主題管理）
-├── i18n/          # 國際化配置和翻譯資源
-├── types/         # TypeScript 類型定義
-├── constants/     # 常量配置（主題/語言）
-├── utils/         # 工具函數
-└── styles/        # 全局樣式
+新集運首頁/
+├── app/                          # Next.js App Router
+│   ├── [locale]/                 # 動態語言路由
+│   │   ├── layout.tsx           # 語言布局
+│   │   ├── page.tsx             # 首頁
+│   │   └── inbound/             # 入庫頁面
+│   │       └── page.tsx         # 已到站頁面
+│   └── layout.tsx               # 根布局樣式
 ```
 
 ✅ 完全符合 React/TypeScript/Vite/i18next 官方標準  
@@ -128,6 +144,34 @@ touch src/features/my-feature/index.tsx
 
 - Node.js >= 16.0.1
 - npm >= 7.0.0
+
+## 📈 開發進度
+
+### ✅ 已完成
+- [x] 首頁 Dashboard 設計與實現
+- [x] 7 種主題切換功能
+- [x] 多語言支持 (繁體/簡體/英文)
+- [x] 未入庫包裹側邊抽屜
+- [x] 已到站入庫頁面
+  - [x] 包裹列表與多選
+  - [x] 編輯品名功能
+  - [x] 發貨方式選擇
+  - [x] 增值服務選項
+  - [x] 費用實時計算
+- [x] 響應式設計
+- [x] GitHub Pages 部署配置
+
+### 🚧 開發中
+- [ ] 待申報功能頁面
+- [ ] 訂單管理頁面
+- [ ] 用戶中心頁面
+- [ ] 支付流程
+
+### 📋 計劃中
+- [ ] 包裹詳情頁面
+- [ ] 物流追蹤頁面
+- [ ] 歷史記錄
+- [ ] 優惠券管理
 
 ## 🛠️ 開發指令
 
@@ -385,6 +429,45 @@ xl: '1280px'  // 桌面
 按鈕內距: px-4 py-2
 輸入框高度: h-10 (40px)
 ```
+
+---
+
+## 💡 重要提示
+
+### 開發環境 vs 生產環境
+- **開發**: 使用 `next.config.mjs`（無 basePath，middleware 可用）
+- **生產**: 使用 `next.config.production.mjs`（有 basePath，靜態導出）
+- 構建命令會自動使用正確的配置
+
+### 新增頁面流程
+1. 在 `app/[locale]/` 下創建新路由
+2. 在 `src/components/` 下創建組件
+3. 在 `messages/` 中添加翻譯文本
+4. 更新此 README 記錄進度
+
+### 組件開發規範
+- 所有客戶端組件必須添加 `'use client'` 指令
+- 遵循 README 中的設計系統規範
+- 使用 `useTranslations()` 處理多語言
+- 使用 `useTheme()` 適配主題
+
+## 📝 最近更新
+
+### 2024-11-12
+- ✨ 新增已到站入庫頁面 (`/inbound`)
+- ✨ 實現包裹多選與編輯品名功能
+- ✨ 添加發貨方式選擇（空運/海運/快遞）
+- ✨ 實現增值服務選項（加固/防水/拍照/保險）
+- ✨ 實時費用計算功能
+- 🎨 新增 Sheet、Checkbox、Radio、Label UI 組件
+- 📱 完整響應式佈局支持
+- 🌐 更新三語翻譯文件
+
+### 2024-11-11
+- ✨ 新增未入庫包裹側邊抽屜
+- 🎨 首頁 Dashboard 完成
+- 🌐 完整多語言支持
+- 🎨 7 種主題風格實現
 
 ---
 
