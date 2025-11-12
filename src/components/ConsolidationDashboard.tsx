@@ -1,5 +1,8 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { motion } from "framer-motion";
 import {
   Bell,
@@ -18,13 +21,21 @@ import {
   Settings,
   HelpCircle,
   CheckCircle2,
-  ScanSearch
+  ScanSearch,
+  Clock
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { Button } from '@/src/components/ui/button';
 import { Badge } from '@/src/components/ui/badge';
 import { Input } from '@/src/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/src/components/ui/sheet';
 import {
   Table,
   TableBody,
@@ -51,6 +62,8 @@ const shipments = [
   { id: "ZX202511-001", origin: "淘寶-廣州倉", items: 5, weight: 3.4, status: "待入庫", eta: "--" },
   { id: "ZX202511-002", origin: "天貓-杭州倉", items: 2, weight: 1.1, status: "已入庫", eta: "11/14" },
   { id: "ZX202511-003", origin: "拼多多-東莞倉", items: 1, weight: 0.7, status: "待合箱", eta: "--" },
+  { id: "ZX202511-004", origin: "京東-北京倉", items: 3, weight: 2.1, status: "待入庫", eta: "--" },
+  { id: "ZX202511-005", origin: "1688-義烏倉", items: 8, weight: 5.2, status: "待入庫", eta: "--" },
 ];
 
 const orders = [
@@ -79,6 +92,12 @@ export default function ConsolidationDashboard() {
   const { theme } = useTheme();
   const t = useTranslations();
   const currentTheme = themes[theme];
+  const router = useRouter();
+  const locale = useLocale();
+  const [isNotInboundOpen, setIsNotInboundOpen] = useState(false);
+  
+  // 篩選出未入庫的包裹
+  const notInboundPackages = shipments.filter(s => s.status === "待入庫");
   
   return (
     <div className="min-h-[100vh] bg-gradient-to-b from-slate-50 to-white">
@@ -127,8 +146,22 @@ export default function ConsolidationDashboard() {
                   <CardTitle className="text-lg">{t('overview.title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                  <OverviewItem icon={Package} title={t('overview.notInbound')} value={5} tip={t('overview.waitingShipment')}/>
-                  <OverviewItem icon={Truck} title={t('overview.arrived')} value={8} tip={t('overview.arrivedWarehouse')}/>
+                  <OverviewItem 
+                    icon={Package} 
+                    title={t('overview.notInbound')} 
+                    value={notInboundPackages.length} 
+                    tip={t('overview.waitingShipment')}
+                    onClick={() => setIsNotInboundOpen(true)}
+                    clickable
+                  />
+                  <OverviewItem 
+                    icon={Truck} 
+                    title={t('overview.arrived')} 
+                    value={8} 
+                    tip={t('overview.arrivedWarehouse')}
+                    onClick={() => router.push(`/${locale}/inbound`)}
+                    clickable
+                  />
                   <OverviewItem icon={UploadCloud} title={t('overview.pendingDeclaration')} value={3} tip={t('overview.needDeclaration')}/>
                   <OverviewItem icon={BadgeDollarSign} title={t('overview.balance')} value={1250} prefix="NT$"/>
                 </CardContent>
@@ -322,13 +355,99 @@ export default function ConsolidationDashboard() {
           </div>
         </div>
       </main>
+
+      {/* 未入庫包裹抽屜 */}
+      <Sheet open={isNotInboundOpen} onOpenChange={setIsNotInboundOpen}>
+        <SheetContent className="w-full sm:max-w-lg">
+          <SheetHeader>
+            <SheetTitle className="flex items-center gap-2">
+              <Package className="h-5 w-5" />
+              {t('inbound.notInboundTitle')} ({notInboundPackages.length})
+            </SheetTitle>
+            <SheetDescription>
+              {t('inbound.notInboundDesc')}
+            </SheetDescription>
+          </SheetHeader>
+          
+          <div className="mt-6 space-y-4">
+            {/* 搜索框 */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input className="pl-9" placeholder={t('inbound.searchPackage')} />
+            </div>
+
+            {/* 包裹列表 */}
+            <div className="space-y-3">
+              {notInboundPackages.map((pkg) => (
+                <Card key={pkg.id} className="hover:shadow-md transition-shadow cursor-pointer">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <Package className="h-4 w-4 text-primary" />
+                          <span className="font-semibold">{pkg.id}</span>
+                          <Badge variant="outline" className="gap-1">
+                            <Clock className="h-3 w-3" />
+                            {t('inbound.waitingPickup')}
+                          </Badge>
+                        </div>
+                        <div className="mt-2 text-sm text-muted-foreground">
+                          {pkg.origin}
+                        </div>
+                        <div className="mt-3 flex items-center gap-4 text-sm">
+                          <div className="flex items-center gap-1">
+                            <Boxes className="h-3.5 w-3.5 text-muted-foreground" />
+                            <span>{pkg.items} {t('inbound.items')}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <BadgeDollarSign className="h-3.5 w-3.5 text-muted-foreground" />
+                            <span>{pkg.weight} kg</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-4 flex gap-2">
+                      <Button size="sm" variant="outline" className="flex-1">
+                        {t('inbound.declare')}
+                      </Button>
+                      <Button size="sm" className="flex-1">
+                        {t('inbound.viewDetails')}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+              
+              {notInboundPackages.length === 0 && (
+                <div className="py-12 text-center text-muted-foreground">
+                  <Package className="mx-auto h-12 w-12 opacity-20" />
+                  <p className="mt-4">暫無未入庫包裹</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
 
-function OverviewItem({ icon: Icon, title, value, tip, prefix }: { icon: any; title: string; value: number; tip?: string; prefix?: string }) {
+function OverviewItem({ icon: Icon, title, value, tip, prefix, onClick, clickable }: { 
+  icon: any; 
+  title: string; 
+  value: number; 
+  tip?: string; 
+  prefix?: string;
+  onClick?: () => void;
+  clickable?: boolean;
+}) {
   return (
-    <div className="rounded-2xl border p-4">
+    <div 
+      className={`rounded-2xl border p-4 ${
+        clickable ? 'cursor-pointer hover:shadow-md hover:border-primary/50 transition-all' : ''
+      }`}
+      onClick={onClick}
+    >
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Icon className="h-4 w-4"/>
         {title}
