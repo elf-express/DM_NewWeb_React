@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from "framer-motion";
 import {
   Bell,
@@ -18,11 +20,11 @@ import {
   CheckCircle2,
   ScanSearch
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
+import { Button } from '@/src/components/ui/button';
+import { Badge } from '@/src/components/ui/badge';
+import { Input } from '@/src/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
 import {
   Table,
   TableBody,
@@ -30,7 +32,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@/src/components/ui/table';
 import {
   AreaChart,
   Area,
@@ -40,9 +42,9 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { ThemeSwitcher, LanguageSwitcher } from '@/components/common';
-import { useTheme, themes } from '@/contexts';
-import { useTranslation } from 'react-i18next';
+import { ThemeSwitcher, LanguageSwitcher } from '@/src/components/common';
+import { useTheme, themes } from '@/src/contexts';
+import { useTranslations } from 'next-intl';
 
 // 假資料
 const shipments = [
@@ -75,7 +77,7 @@ const QuickAction = ({ icon: Icon, label }: { icon: any; label: string }) => (
 
 export default function ConsolidationDashboard() {
   const { theme } = useTheme();
-  const { t } = useTranslation();
+  const t = useTranslations();
   const currentTheme = themes[theme];
   
   return (
@@ -91,7 +93,7 @@ export default function ConsolidationDashboard() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input className="pl-9" placeholder={t('common.search')} />
               </div>
-              <Button variant="outline" className="gap-2"><ScanSearch className="h-4 w-4"/>{t('common.quickSearch', '快速查件')}</Button>
+              <Button variant="outline" className="gap-2"><ScanSearch className="h-4 w-4"/>{t('common.quickSearch')}</Button>
               <LanguageSwitcher />
               <ThemeSwitcher />
               <Button variant="ghost" size="icon"><Bell className="h-5 w-5"/></Button>
@@ -243,7 +245,7 @@ export default function ConsolidationDashboard() {
                             </TableCell>
                             <TableCell className="text-right space-x-2">
                               <Button size="sm" variant="outline">{t('orders.details')}</Button>
-                              <Button size="sm">{t('orders.pay', '付款')}</Button>
+                              <Button size="sm">{t('orders.pay')}</Button>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -271,8 +273,8 @@ export default function ConsolidationDashboard() {
             <Card className="overflow-hidden">
               <CardContent className="p-0">
                 <div className={`bg-gradient-to-r ${currentTheme.primary} p-4 text-white transition-all duration-300`}>
-                  <div className="text-sm opacity-90">{t('user.welcome', '歡迎回來')}，王南傑</div>
-                  <div className="text-lg font-semibold">{t('user.memberLevel', '會員等級')}：{t('user.platinum', '白金')}</div>
+                  <div className="text-sm opacity-90">{t('user.welcome')}，王南傑</div>
+                  <div className="text-lg font-semibold">{t('user.memberLevel')}：{t('user.platinum')}</div>
                   <div className="mt-2 flex gap-2 text-xs opacity-90">
                     <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30">免手續費券 x2</Badge>
                     <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30">運費 95 折</Badge>
@@ -280,8 +282,8 @@ export default function ConsolidationDashboard() {
                 </div>
                 <div className="p-4 space-y-3">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">{t('user.monthlyShipments', '當月出貨量')}</span>
-                    <span>23 {t('user.items', '件')}</span>
+                    <span className="text-muted-foreground">{t('user.monthlyShipments')}</span>
+                    <span>23 {t('user.items')}</span>
                   </div>
                   <div className="h-24">
                     <ResponsiveContainer width="100%" height="100%">

@@ -1,6 +1,8 @@
+'use client';
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import type { Theme, ThemeConfig } from '@/types';
-import { THEME_CONFIGS, DEFAULT_THEME } from '@/constants';
+import type { Theme, ThemeConfig } from '@/src/types';
+import { THEME_CONFIGS, DEFAULT_THEME } from '@/src/constants';
 
 export type { Theme };
 

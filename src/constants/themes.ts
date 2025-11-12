@@ -1,5 +1,5 @@
 // 主題常量定義
-import type { Theme, ThemeConfig } from '@/types';
+import type { Theme, ThemeConfig } from '@/src/types';
 
 export const THEME_NAMES: Record<Theme, string> = {
   default: 'default',

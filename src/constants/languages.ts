@@ -1,5 +1,5 @@
 // 語言常量定義
-import type { Language, LanguageOption } from '@/types';
+import type { Language, LanguageOption } from '@/src/types';
 
 export const SUPPORTED_LANGUAGES: LanguageOption[] = [
   { code: 'zh-TW', name: '繁體中文', flag: '🇹🇼' },

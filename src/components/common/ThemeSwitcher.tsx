@@ -1,13 +1,15 @@
+'use client';
+
 import React from 'react';
 import { Palette } from 'lucide-react';
-import { useTheme, Theme, themes } from '@/contexts/ThemeContext';
-import { Button } from '@/components/ui/button';
+import { useTheme, Theme, themes } from '@/src/contexts';
+import { Button } from '@/src/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@/src/components/ui/dropdown-menu';
 
 export const ThemeSwitcher: React.FC = () => {
   const { theme, setTheme } = useTheme();

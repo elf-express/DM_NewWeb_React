@@ -1,37 +1,55 @@
-import { Languages } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+'use client';
+
+import { useLocale } from 'next-intl';
+import { useRouter, usePathname } from 'next/navigation';
+import { Button } from '@/src/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { SUPPORTED_LANGUAGES } from '@/constants';
-
-const languages = SUPPORTED_LANGUAGES;
+} from '@/src/components/ui/dropdown-menu';
+import { Languages } from 'lucide-react';
+import { SUPPORTED_LANGUAGES } from '@/src/constants';
+import { locales } from '@/i18n/config';
 
 export function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
+  const changeLanguage = (newLocale: string) => {
+    // 获取当前路径，移除语言前缀
+    const segments = pathname.split('/').filter(Boolean);
+    const pathWithoutLocale = segments.slice(1).join('/');
+    
+    // 跳转到新语言的相同路径
+    router.push(`/${newLocale}/${pathWithoutLocale}`);
+  };
+
+  const currentLanguage = SUPPORTED_LANGUAGES.find(
+    (lang) => lang.code === locale
+  ) || SUPPORTED_LANGUAGES[0];
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Languages className="h-5 w-5" />
+          <span className="text-lg">{currentLanguage.flag}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {languages.map((language) => (
+        {SUPPORTED_LANGUAGES.map((lang) => (
           <DropdownMenuItem
-            key={language.code}
-            onClick={() => i18n.changeLanguage(language.code)}
-            className={i18n.language === language.code ? 'bg-accent' : ''}
+            key={lang.code}
+            onClick={() => changeLanguage(lang.code)}
+            className="gap-2 cursor-pointer"
           >
-            <span className="mr-2">{language.flag}</span>
-            {language.name}
+            <span className="text-lg">{lang.flag}</span>
+            <span>{lang.name}</span>
+            {lang.code === locale && (
+              <span className="ml-auto text-xs">✓</span>
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
