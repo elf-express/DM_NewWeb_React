@@ -298,12 +298,7 @@ export default function ConsolidationDashboard() {
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">本月任務完成度</span>
-                    <span>72%</span>
-                  </div>
-                  <Progress value={72} />
-                  <div className="grid grid-cols-2 gap-2 pt-2">
+                  <div className="grid grid-cols-2 gap-2 pt-3">
                     <Button variant="outline" className="gap-2"><BadgeDollarSign className="h-4 w-4"/>查看帳單</Button>
                     <Button className="gap-2"><CreditCard className="h-4 w-4"/>一鍵充值</Button>
                   </div>
