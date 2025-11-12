@@ -2,11 +2,18 @@
 
 現代化的集運管理儀表板，支援多主題切換功能。
 
+## 🌐 線上 Demo
+
+**網站網址：** https://elf-express.github.io/DM_NewWeb_React/
+
+> 首次部署後可能需要幾分鐘才能訪問
+
 ## 🎨 主題系統
 
-應用程式支援 **6 種精美的顏色主題**：
+應用程式支援 **7 種精美的顏色主題**：
 
 - 🔵 **經典藍** - 專業沉穩的藍色系（預設）
+- ⚫ **極簡黑白** - 簡潔專業的黑白灰色系
 - 💜 **夢幻紫** - 優雅浪漫的紫色系
 - 💚 **清新綠** - 自然舒適的綠色系
 - 🧡 **活力橙** - 熱情活潑的橙色系
@@ -104,6 +111,42 @@ src/
 - 出貨趨勢圖表
 - 任務完成度追蹤
 - 收件地址管理
+
+## 🚀 部署到 GitHub Pages
+
+### 快速部署
+
+```bash
+# 1. 配置 Git（首次使用）
+git config --global user.name "您的GitHub用戶名"
+git config --global user.email "您的GitHub郵箱"
+
+# 2. 提交並推送
+git commit -m "Initial commit"
+git remote add origin https://github.com/elf-express/DM_NewWeb_React.git
+git branch -M main
+git push -u origin main
+
+# 3. 部署到 GitHub Pages
+npm run deploy
+```
+
+### GitHub Pages 設置
+
+1. 前往 [Settings > Pages](https://github.com/elf-express/DM_NewWeb_React/settings/pages)
+2. Source 選擇 `gh-pages` 分支
+3. 點擊 Save
+
+### 後續更新
+
+```bash
+git add .
+git commit -m "更新內容"
+git push
+npm run deploy
+```
+
+詳細步驟請查看 [DEPLOYMENT.md](./DEPLOYMENT.md) 或 [部署步驟.txt](./部署步驟.txt)
 
 ## 📝 授權
 

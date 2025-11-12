@@ -52,7 +52,7 @@ DropdownMenuTrigger.displayName = "DropdownMenuTrigger"
 export const DropdownMenuContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { align?: "start" | "end" }
->(({ className, children, align = "start", ...props }, ref) => {
+>(({ className, children, align = "start", ...props }, _ref) => {
   const context = React.useContext(DropdownMenuContext)
   if (!context) throw new Error("DropdownMenuContent must be used within DropdownMenu")
   

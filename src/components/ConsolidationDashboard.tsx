@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import {
   Bell,
@@ -28,7 +27,6 @@ import { Progress } from "@/components/ui/progress";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -338,18 +336,6 @@ function OverviewItem({ icon: Icon, title, value, tip, prefix }: { icon: any; ti
       </div>
       <div className="mt-2 text-2xl font-semibold tracking-tight">{prefix}{value}</div>
       {tip && <div className="mt-1 text-xs text-muted-foreground">{tip}</div>}
-    </div>
-  );
-}
-
-function TodoItem({ text, progress }: { text: string; progress: number }) {
-  return (
-    <div className="rounded-2xl border p-3">
-      <div className="flex items-center justify-between text-sm">
-        <span>{text}</span>
-        <span className="text-muted-foreground">{progress}%</span>
-      </div>
-      <Progress className="mt-2" value={progress}/>
     </div>
   );
 }
