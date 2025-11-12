@@ -1,6 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import { notFound } from 'next/navigation';
 import { locales } from '@/i18n/config';
 import { ThemeProvider } from '@/src/contexts/ThemeContext';
 import '@/src/styles/globals.css';
@@ -17,14 +16,7 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  
-  // 验证 locale
-  if (!locales.includes(locale as any)) {
-    notFound();
-  }
-
-  // 获取当前 locale 的翻译消息
-  const messages = await getMessages();
+  const messages = await getMessages({ locale });
 
   return (
     <html lang={locale} suppressHydrationWarning>

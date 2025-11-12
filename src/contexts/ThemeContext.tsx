@@ -23,8 +23,11 @@ export const useTheme = () => {
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    const stored = localStorage.getItem('app-theme');
-    return (stored as Theme) || DEFAULT_THEME;
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('app-theme');
+      return (stored as Theme) || DEFAULT_THEME;
+    }
+    return DEFAULT_THEME;
   });
 
   useEffect(() => {

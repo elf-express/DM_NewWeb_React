@@ -2,7 +2,9 @@
 
 > **線上 Demo**: https://elf-express.github.io/DM_NewWeb_React/
 
-現代化的集運管理儀表板，採用 React + TypeScript + Vite 構建，支持多主題、多語言，完全符合官方最佳實踐。
+現代化的集運管理平台
+
+基於 Next.js 16 + TypeScript + next-intl 構建的現代化集運管理系統。，支持多主題、多語言，完全符合官方最佳實踐。
 
 ## ✨ 主要特性
 
@@ -127,15 +129,25 @@ touch src/features/my-feature/index.tsx
 - Node.js >= 16.0.1
 - npm >= 7.0.0
 
-## 📝 腳本命令
+## 🛠️ 開發指令
 
-| 命令 | 說明 |
-|------|------|
-| `npm run dev` | 開發模式 |
-| `npm run build` | 建置生產版本 |
-| `npm run preview` | 預覽生產版本 |
-| `npm run deploy` | 部署到 GitHub Pages |
-| `npm run typecheck` | TypeScript 類型檢查 |
+```bash
+# 開發模式
+npm run dev
+# 訪問: http://localhost:3000/zh-TW
+
+# 類型檢查
+npm run typecheck
+
+# 構建生產版本 (使用生產配置)
+npm run build
+
+# 啟動生產服務器
+npm run start
+
+# 部署到 GitHub Pages
+npm run deploy
+```
 
 ## 📄 授權
 
@@ -143,4 +155,4 @@ MIT License
 
 ---
 
-**Built with ❤️ using React + TypeScript + Vite**
+**Built with ❤️ using Next.js + TypeScript + next-intl**

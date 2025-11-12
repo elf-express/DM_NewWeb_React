@@ -2,16 +2,8 @@ import createMiddleware from 'next-intl/middleware';
 import { locales, defaultLocale } from './i18n/config';
 
 export default createMiddleware({
-  // 支持的所有语言
   locales,
-  
-  // 默认语言
   defaultLocale,
-  
-  // 语言检测策略
-  localeDetection: true,
-  
-  // 语言前缀策略：always = 始终显示语言前缀（如 /zh-TW/）
   localePrefix: 'always'
 });
 
