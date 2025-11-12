@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 const nextConfig = {
   output: 'export',
   basePath: '/DM_NewWeb_React',
+  assetPrefix: '/DM_NewWeb_React',
   images: {
     unoptimized: true
   },
