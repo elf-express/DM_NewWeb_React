@@ -41,7 +41,9 @@ import {
   CartesianGrid,
 } from "recharts";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTheme, themes } from "@/contexts/ThemeContext";
+import { useTranslation } from 'react-i18next';
 
 // 假資料
 const shipments = [
@@ -74,6 +76,7 @@ const QuickAction = ({ icon: Icon, label }: { icon: any; label: string }) => (
 
 export default function ConsolidationDashboard() {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const currentTheme = themes[theme];
   
   return (
@@ -90,6 +93,7 @@ export default function ConsolidationDashboard() {
                 <Input className="pl-9" placeholder="搜尋：運單號 / 訂單 / 入庫編號" />
               </div>
               <Button variant="outline" className="gap-2"><ScanSearch className="h-4 w-4"/>快速查件</Button>
+              <LanguageSwitcher />
               <ThemeSwitcher />
               <Button variant="ghost" size="icon"><Bell className="h-5 w-5"/></Button>
             </div>

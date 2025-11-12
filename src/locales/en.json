@@ -1,0 +1,104 @@
+{
+  "common": {
+    "search": "Search package/order number",
+    "notifications": "Notifications",
+    "language": "Language",
+    "theme": "Theme"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "orders": "My Orders",
+    "packages": "Package Management",
+    "billing": "Billing Center"
+  },
+  "user": {
+    "member": "Member",
+    "points": "Points",
+    "gifts": "Gifts",
+    "shippingTrend": "Recent Shipping Trend",
+    "viewBill": "View Bill",
+    "recharge": "Quick Recharge"
+  },
+  "overview": {
+    "title": "Account Overview",
+    "notInbound": "Not Inbound",
+    "arrived": "Arrived",
+    "pendingDeclaration": "Pending Declaration",
+    "balance": "Account Balance",
+    "waitingShipment": "Waiting for shipment",
+    "arrivedWarehouse": "Arrived at warehouse",
+    "needDeclaration": "Need declaration"
+  },
+  "customerService": {
+    "title": "Customer Service",
+    "faq": "FAQ: Pricing, Volume Calculation, Prohibited Items, Customs",
+    "onlineService": "Online Service",
+    "packageQuery": "Package Query",
+    "serviceSettings": "Service Settings"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "declare": "Quick Declare",
+    "arrange": "Arrange Shipping",
+    "payment": "Recharge/Payment",
+    "history": "Order History",
+    "address": "Delivery Address",
+    "settings": "Preferences"
+  },
+  "tabs": {
+    "myInbound": "My Inbound",
+    "myOrders": "My Orders",
+    "notifications": "Notifications"
+  },
+  "inbound": {
+    "id": "Inbound ID",
+    "origin": "Origin",
+    "items": "Items",
+    "weight": "Weight(kg)",
+    "status": "Status",
+    "eta": "ETA",
+    "actions": "Actions",
+    "inWarehouse": "In Warehouse",
+    "inTransit": "In Transit",
+    "declare": "Declare",
+    "viewDetails": "View Details"
+  },
+  "orders": {
+    "orderId": "Order ID",
+    "type": "Type",
+    "destination": "Destination",
+    "status": "Status",
+    "date": "Date",
+    "amount": "Amount",
+    "actions": "Actions",
+    "consolidation": "Consolidation",
+    "direct": "Direct",
+    "processing": "Processing",
+    "shipped": "Shipped",
+    "track": "Track",
+    "details": "Details"
+  },
+  "notifications": {
+    "packageArrived": "Package Arrived",
+    "arrivedDescription": "Your package #SF1234 has safely arrived at the warehouse, please declare soon.",
+    "promotionEnd": "Promotion Ending Soon",
+    "promotionDescription": "Last 3 days for this month's promotion, 10% off for orders over $500!",
+    "timeAgo": "hours ago"
+  },
+  "address": {
+    "title": "My Delivery Address",
+    "default": "Default",
+    "manage": "Manage/Add Address",
+    "taipei": "Taipei - Neihu Pickup Point",
+    "kaohsiung": "Kaohsiung - Home Delivery"
+  },
+  "themes": {
+    "default": "Classic Blue",
+    "minimal": "Minimal B&W",
+    "purple": "Dream Purple",
+    "green": "Fresh Green",
+    "orange": "Vibrant Orange",
+    "rose": "Romantic Rose",
+    "cyan": "Tech Cyan"
+  }
+}
