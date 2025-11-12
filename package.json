@@ -10,7 +10,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "predeploy": "node scripts/deploy-build.js && npm run build:prod",
-    "deploy": "gh-pages -d out",
+    "deploy": "gh-pages -d out --dotfiles",
     "postdeploy": "node scripts/restore-config.js"
   },
   "dependencies": {
