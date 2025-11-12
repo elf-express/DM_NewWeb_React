@@ -18,11 +18,11 @@ import {
   CheckCircle2,
   ScanSearch
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Table,
   TableBody,
@@ -30,7 +30,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   AreaChart,
   Area,
@@ -40,9 +40,8 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { useTheme, themes } from "@/contexts/ThemeContext";
+import { ThemeSwitcher, LanguageSwitcher } from '@/components/common';
+import { useTheme, themes } from '@/contexts';
 import { useTranslation } from 'react-i18next';
 
 // 假資料

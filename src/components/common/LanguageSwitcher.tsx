@@ -5,14 +5,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu';
-import { Button } from './ui/button';
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { SUPPORTED_LANGUAGES } from '@/constants';
 
-const languages = [
-  { code: 'zh-TW', name: '繁體中文', flag: '🇹🇼' },
-  { code: 'zh-CN', name: '简体中文', flag: '🇨🇳' },
-  { code: 'en', name: 'English', flag: '🇺🇸' }
-];
+const languages = SUPPORTED_LANGUAGES;
 
 export function LanguageSwitcher() {
   const { i18n } = useTranslation();
