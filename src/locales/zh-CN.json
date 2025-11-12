@@ -1,6 +1,7 @@
 {
   "common": {
     "search": "搜索包裹编号、订单号",
+    "quickSearch": "快速查件",
     "notifications": "通知",
     "language": "语言",
     "theme": "主题"
@@ -17,7 +18,12 @@
     "gifts": "礼物",
     "shippingTrend": "近期出货趋势",
     "viewBill": "查看账单",
-    "recharge": "一键充值"
+    "recharge": "一键充值",
+    "welcome": "欢迎回来",
+    "memberLevel": "会员等级",
+    "platinum": "白金",
+    "monthlyShipments": "当月出货量",
+    "items": "件"
   },
   "overview": {
     "title": "账户概览",
@@ -64,19 +70,20 @@
     "viewDetails": "查看详情"
   },
   "orders": {
-    "orderId": "订单号",
-    "type": "类型",
+    "orderId": "订单编号",
+    "type": "服务",
     "destination": "目的地",
     "status": "状态",
-    "date": "日期",
-    "amount": "金额",
+    "date": "建立时间",
+    "amount": "金额 (NT$)",
     "actions": "操作",
     "consolidation": "集运",
     "direct": "直送",
     "processing": "处理中",
     "shipped": "已出货",
     "track": "追踪",
-    "details": "详情"
+    "details": "明细",
+    "pay": "付款"
   },
   "notifications": {
     "packageArrived": "包裹到达",

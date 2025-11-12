@@ -90,9 +90,9 @@ export default function ConsolidationDashboard() {
             <div className="ml-auto flex w-full max-w-xl items-center gap-2">
               <div className="relative w-full">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input className="pl-9" placeholder="搜尋：運單號 / 訂單 / 入庫編號" />
+                <Input className="pl-9" placeholder={t('common.search')} />
               </div>
-              <Button variant="outline" className="gap-2"><ScanSearch className="h-4 w-4"/>快速查件</Button>
+              <Button variant="outline" className="gap-2"><ScanSearch className="h-4 w-4"/>{t('common.quickSearch', '快速查件')}</Button>
               <LanguageSwitcher />
               <ThemeSwitcher />
               <Button variant="ghost" size="icon"><Bell className="h-5 w-5"/></Button>
@@ -123,13 +123,13 @@ export default function ConsolidationDashboard() {
             <motion.div initial={{opacity:0, y: 6}} animate={{opacity:1, y:0}}>
               <Card className="shadow-sm">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">帳戶概覽</CardTitle>
+                  <CardTitle className="text-lg">{t('overview.title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                  <OverviewItem icon={Package} title="未入庫" value={5} tip="等待賣家發貨"/>
-                  <OverviewItem icon={Truck} title="已到站" value={8} tip="已到達集運倉"/>
-                  <OverviewItem icon={UploadCloud} title="待申報" value={3} tip="需完成申報"/>
-                  <OverviewItem icon={BadgeDollarSign} title="集貨幣帳戶餘額" value={1250} prefix="NT$"/>
+                  <OverviewItem icon={Package} title={t('overview.notInbound')} value={5} tip={t('overview.waitingShipment')}/>
+                  <OverviewItem icon={Truck} title={t('overview.arrived')} value={8} tip={t('overview.arrivedWarehouse')}/>
+                  <OverviewItem icon={UploadCloud} title={t('overview.pendingDeclaration')} value={3} tip={t('overview.needDeclaration')}/>
+                  <OverviewItem icon={BadgeDollarSign} title={t('overview.balance')} value={1250} prefix="NT$"/>
                 </CardContent>
               </Card>
             </motion.div>
@@ -137,35 +137,35 @@ export default function ConsolidationDashboard() {
             {/* 客服中心與快捷 */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <Card>
-                <CardHeader className="pb-2"><CardTitle className="text-base">客服中心</CardTitle></CardHeader>
+                <CardHeader className="pb-2"><CardTitle className="text-base">{t('customerService.title')}</CardTitle></CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex items-start gap-3 rounded-2xl border p-3">
                     <HelpCircle className="mt-0.5 h-4 w-4"/>
-                    <div className="text-sm text-muted-foreground">常見問題：計費方式、材積計算、禁運品清單、關稅說明</div>
+                    <div className="text-sm text-muted-foreground">{t('customerService.faq')}</div>
                   </div>
-                  <Button className="w-full gap-2"><MessageSquare className="h-4 w-4"/> 線上客服</Button>
+                  <Button className="w-full gap-2"><MessageSquare className="h-4 w-4"/> {t('customerService.onlineService')}</Button>
                   <div className="grid grid-cols-2 gap-2">
                     <Button variant="outline" className="gap-2">
                       <Package className="h-4 w-4"/>
-                      包裹查詢
+                      {t('customerService.packageQuery')}
                     </Button>
                     <Button variant="outline" className="gap-2">
                       <Settings className="h-4 w-4"/>
-                      服務設定
+                      {t('customerService.serviceSettings')}
                     </Button>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardHeader className="pb-2"><CardTitle className="text-base">快捷功能</CardTitle></CardHeader>
+                <CardHeader className="pb-2"><CardTitle className="text-base">{t('quickActions.title')}</CardTitle></CardHeader>
                 <CardContent className="grid grid-cols-2 gap-3">
-                  <QuickAction icon={UploadCloud} label="一鍵申報"/>
-                  <QuickAction icon={Truck} label="安排出貨"/>
-                  <QuickAction icon={CreditCard} label="充值/付款"/>
-                  <QuickAction icon={History} label="歷史訂單"/>
-                  <QuickAction icon={MapPin} label="收件地址"/>
-                  <QuickAction icon={Settings} label="偏好設定"/>
+                  <QuickAction icon={UploadCloud} label={t('quickActions.declare')}/>
+                  <QuickAction icon={Truck} label={t('quickActions.arrange')}/>
+                  <QuickAction icon={CreditCard} label={t('quickActions.payment')}/>
+                  <QuickAction icon={History} label={t('quickActions.history')}/>
+                  <QuickAction icon={MapPin} label={t('quickActions.address')}/>
+                  <QuickAction icon={Settings} label={t('quickActions.settings')}/>
                 </CardContent>
               </Card>
             </div>
@@ -174,9 +174,9 @@ export default function ConsolidationDashboard() {
             <Tabs defaultValue="inbound" className="w-full">
               <div className="flex items-center justify-between">
                 <TabsList>
-                  <TabsTrigger value="inbound">我的入庫</TabsTrigger>
-                  <TabsTrigger value="orders">我的訂單</TabsTrigger>
-                  <TabsTrigger value="notice">通知訊息</TabsTrigger>
+                  <TabsTrigger value="inbound">{t('tabs.myInbound')}</TabsTrigger>
+                  <TabsTrigger value="orders">{t('tabs.myOrders')}</TabsTrigger>
+                  <TabsTrigger value="notice">{t('tabs.notifications')}</TabsTrigger>
                 </TabsList>
                 <Button variant="outline" className="gap-2"><MapPin className="h-4 w-4"/>新增收件地址</Button>
               </div>
@@ -186,13 +186,13 @@ export default function ConsolidationDashboard() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>入庫單號</TableHead>
-                          <TableHead>來源倉/平台</TableHead>
-                          <TableHead className="text-center">件數</TableHead>
-                          <TableHead className="text-center">重量(kg)</TableHead>
-                          <TableHead>狀態</TableHead>
-                          <TableHead><div className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5"/>預計</div></TableHead>
-                          <TableHead className="text-right">操作</TableHead>
+                          <TableHead>{t('inbound.id')}</TableHead>
+                          <TableHead>{t('inbound.origin')}</TableHead>
+                          <TableHead className="text-center">{t('inbound.items')}</TableHead>
+                          <TableHead className="text-center">{t('inbound.weight')}</TableHead>
+                          <TableHead>{t('inbound.status')}</TableHead>
+                          <TableHead><div className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5"/>{t('inbound.eta')}</div></TableHead>
+                          <TableHead className="text-right">{t('inbound.actions')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -207,8 +207,8 @@ export default function ConsolidationDashboard() {
                             </TableCell>
                             <TableCell>{s.eta}</TableCell>
                             <TableCell className="text-right space-x-2">
-                              <Button size="sm" variant="outline">申報</Button>
-                              <Button size="sm">查看詳情</Button>
+                              <Button size="sm" variant="outline">{t('inbound.declare')}</Button>
+                              <Button size="sm">{t('inbound.viewDetails')}</Button>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -224,12 +224,12 @@ export default function ConsolidationDashboard() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>訂單編號</TableHead>
-                          <TableHead>服務</TableHead>
-                          <TableHead>金額 (NT$)</TableHead>
-                          <TableHead>建立時間</TableHead>
-                          <TableHead>狀態</TableHead>
-                          <TableHead className="text-right">操作</TableHead>
+                          <TableHead>{t('orders.orderId')}</TableHead>
+                          <TableHead>{t('orders.type')}</TableHead>
+                          <TableHead>{t('orders.amount')}</TableHead>
+                          <TableHead>{t('orders.date')}</TableHead>
+                          <TableHead>{t('orders.status')}</TableHead>
+                          <TableHead className="text-right">{t('orders.actions')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -243,8 +243,8 @@ export default function ConsolidationDashboard() {
                               <Badge variant={o.status === "已出貨" ? "secondary" : "outline"}>{o.status}</Badge>
                             </TableCell>
                             <TableCell className="text-right space-x-2">
-                              <Button size="sm" variant="outline">明細</Button>
-                              <Button size="sm">付款</Button>
+                              <Button size="sm" variant="outline">{t('orders.details')}</Button>
+                              <Button size="sm">{t('orders.pay', '付款')}</Button>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -272,8 +272,8 @@ export default function ConsolidationDashboard() {
             <Card className="overflow-hidden">
               <CardContent className="p-0">
                 <div className={`bg-gradient-to-r ${currentTheme.primary} p-4 text-white transition-all duration-300`}>
-                  <div className="text-sm opacity-90">歡迎回來，王南傑</div>
-                  <div className="text-lg font-semibold">會員等級：白金</div>
+                  <div className="text-sm opacity-90">{t('user.welcome', '歡迎回來')}，王南傑</div>
+                  <div className="text-lg font-semibold">{t('user.memberLevel', '會員等級')}：{t('user.platinum', '白金')}</div>
                   <div className="mt-2 flex gap-2 text-xs opacity-90">
                     <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30">免手續費券 x2</Badge>
                     <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30">運費 95 折</Badge>
@@ -281,8 +281,8 @@ export default function ConsolidationDashboard() {
                 </div>
                 <div className="p-4 space-y-3">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">當月出貨量</span>
-                    <span>23 件</span>
+                    <span className="text-muted-foreground">{t('user.monthlyShipments', '當月出貨量')}</span>
+                    <span>23 {t('user.items', '件')}</span>
                   </div>
                   <div className="h-24">
                     <ResponsiveContainer width="100%" height="100%">
@@ -302,8 +302,8 @@ export default function ConsolidationDashboard() {
                     </ResponsiveContainer>
                   </div>
                   <div className="grid grid-cols-2 gap-2 pt-3">
-                    <Button variant="outline" className="gap-2"><BadgeDollarSign className="h-4 w-4"/>查看帳單</Button>
-                    <Button className="gap-2"><CreditCard className="h-4 w-4"/>一鍵充值</Button>
+                    <Button variant="outline" className="gap-2"><BadgeDollarSign className="h-4 w-4"/>{t('user.viewBill')}</Button>
+                    <Button className="gap-2"><CreditCard className="h-4 w-4"/>{t('user.recharge')}</Button>
                   </div>
                 </div>
               </CardContent>
@@ -311,11 +311,11 @@ export default function ConsolidationDashboard() {
 
             {/* 收件地址 */}
             <Card>
-              <CardHeader className="pb-2"><CardTitle className="text-base">我的收件地址</CardTitle></CardHeader>
+              <CardHeader className="pb-2"><CardTitle className="text-base">{t('address.title')}</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                <AddressItem name="台北-內湖自取點" detail="台北市內湖區瑞光路 123 號 1 樓" defaultTag />
-                <AddressItem name="高雄-宅配地址" detail="高雄市鼓山區美術東二路 88 號 12 樓" />
-                <div className="pt-1"><Button variant="outline" className="w-full">管理/新增地址</Button></div>
+                <AddressItem name={t('address.taipei')} detail="台北市內湖區瑞光路 123 號 1 樓" defaultTag />
+                <AddressItem name={t('address.kaohsiung')} detail="高雄市鼓山區美術東二路 88 號 12 樓" />
+                <div className="pt-1"><Button variant="outline" className="w-full">{t('address.manage')}</Button></div>
               </CardContent>
             </Card>
           </div>

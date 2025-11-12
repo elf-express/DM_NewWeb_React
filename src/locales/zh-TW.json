@@ -1,6 +1,7 @@
 {
   "common": {
     "search": "搜尋包裹編號、訂單號",
+    "quickSearch": "快速查件",
     "notifications": "通知",
     "language": "語言",
     "theme": "主題"
@@ -17,7 +18,12 @@
     "gifts": "禮物",
     "shippingTrend": "近期出貨趨勢",
     "viewBill": "查看帳單",
-    "recharge": "一鍵充值"
+    "recharge": "一鍵充值",
+    "welcome": "歡迎回來",
+    "memberLevel": "會員等級",
+    "platinum": "白金",
+    "monthlyShipments": "當月出貨量",
+    "items": "件"
   },
   "overview": {
     "title": "帳戶概覽",
@@ -64,19 +70,20 @@
     "viewDetails": "查看詳情"
   },
   "orders": {
-    "orderId": "訂單號",
-    "type": "類型",
+    "orderId": "訂單編號",
+    "type": "服務",
     "destination": "目的地",
     "status": "狀態",
-    "date": "日期",
-    "amount": "金額",
+    "date": "建立時間",
+    "amount": "金額 (NT$)",
     "actions": "操作",
     "consolidation": "集運",
     "direct": "直送",
     "processing": "處理中",
     "shipped": "已出貨",
     "track": "追蹤",
-    "details": "詳情"
+    "details": "明細",
+    "pay": "付款"
   },
   "notifications": {
     "packageArrived": "包裹到達",

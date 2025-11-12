@@ -1,6 +1,7 @@
 {
   "common": {
     "search": "Search package/order number",
+    "quickSearch": "Quick Search",
     "notifications": "Notifications",
     "language": "Language",
     "theme": "Theme"
@@ -17,7 +18,12 @@
     "gifts": "Gifts",
     "shippingTrend": "Recent Shipping Trend",
     "viewBill": "View Bill",
-    "recharge": "Quick Recharge"
+    "recharge": "Quick Recharge",
+    "welcome": "Welcome back",
+    "memberLevel": "Member Level",
+    "platinum": "Platinum",
+    "monthlyShipments": "Monthly Shipments",
+    "items": "items"
   },
   "overview": {
     "title": "Account Overview",
@@ -65,18 +71,19 @@
   },
   "orders": {
     "orderId": "Order ID",
-    "type": "Type",
+    "type": "Service",
     "destination": "Destination",
     "status": "Status",
-    "date": "Date",
-    "amount": "Amount",
+    "date": "Created",
+    "amount": "Amount (NT$)",
     "actions": "Actions",
     "consolidation": "Consolidation",
     "direct": "Direct",
     "processing": "Processing",
     "shipped": "Shipped",
     "track": "Track",
-    "details": "Details"
+    "details": "Details",
+    "pay": "Pay"
   },
   "notifications": {
     "packageArrived": "Package Arrived",
