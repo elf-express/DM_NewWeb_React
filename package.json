@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build --config next.config.production.mjs",
+    "build": "next build",
+    "build:prod": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d out"
+    "predeploy": "node scripts/deploy-build.js && npm run build:prod",
+    "deploy": "gh-pages -d out",
+    "postdeploy": "node scripts/restore-config.js"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.3.3",

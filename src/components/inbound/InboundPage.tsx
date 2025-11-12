@@ -123,7 +123,7 @@ export default function InboundPage() {
       {/* Tab 篩選 */}
       <div className="border-b bg-white">
         <div className="mx-auto max-w-7xl px-4">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
             <TabsList>
               <TabsTrigger value="all">
                 {t('inbound.allPackages')} ({arrivedPackages.length})

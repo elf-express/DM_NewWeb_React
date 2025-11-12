@@ -4,7 +4,8 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 注意：开发时不要使用 basePath 和 output: 'export'
+  output: 'export',
+  basePath: '/DM_NewWeb_React',
   images: {
     unoptimized: true
   },
