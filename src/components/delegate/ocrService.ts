@@ -69,14 +69,23 @@ function parseOCRText(text: string): ExtractedData {
     /\b(\d{12,15})\b/g,
   ];
 
-  // 商品名稱正則（從淘寶訂單中提取）
+  // 商品名稱正則表達式 - 優化版
   const productPatterns = [
-    // 匹配商品描述行（通常在圖片後面，包含中文和數字）
-    /([帆布袋|馬甲|按摩儀|遮陽膜|手提袋|定制|印logo|兒童|防水][^\n\r]{10,80})/,
-    // 匹配"已簽收"或"運輸中"後的商品信息
-    /(?:已簽收|運輸中|已發貨)[\s\n\r]+([^\n\r]{5,60})/,
-    // 商品標題模式
-    /(?:商品|產品|貨品)[\s:：]*([^\n\r]{5,60})/i,
+    // 1. 明確標註的商品名稱
+    /商品名[稱称][:：]\s*(.+?)(?:\n|$)/i,
+    /品名[:：]\s*(.+?)(?:\n|$)/i,
+    
+    // 2. 天貓/淘寶格式：店鋪名稱下方的商品標題
+    /(?:天猫|淘宝|京东)\s+[^\n]+\n\s*([^\n¥]{8,80}?)(?:\s*¥|\s*x\d|群星版|$)/i,
+    
+    // 3. 【優惠價】或其他標籤開頭的商品名
+    /(?:【[^】]+】)\s*([^¥\n]{6,80}?)(?:\s*¥|汉堡|压肉|模具|$)/i,
+    
+    // 4. 價格前的商品名（允許更長的名稱）
+    /([^\n¥]{10,100}?)\s*(?:¥|￥)\s*[\d,]+/i,
+    
+    // 5. 包含數量描述的商品名（如 16款23cm奧特曼）
+    /(\d+款[^\n¥]{5,60}?)\s*(?:¥|可指定|送小|$)/i,
   ];
 
   // 數量正則（x1000, x1 格式）
@@ -158,11 +167,33 @@ function parseOCRText(text: string): ExtractedData {
       const cleaned = line.trim();
       // 跳過狀態、地址等信息
       if (
-        /帆布|馬甲|按摩|定制|手提|防水|logo|包|袋|衣|鞋|器|機|膜|套/.test(cleaned) &&
-        !/(已簽收|運輸中|深圳|廣州|北京|上海|快遞|物流|電話)/.test(cleaned)
+        /布鲁可|奥特|积木|模具|人偶|玩具|手办|压肉器|饼模|不锈钢|帆布|馬甲|按摩|定制|手提|防水|logo|包|袋|衣|鞋|器|機|膜|套|特曼|超人|圆形|汉堡|神器|辅食|煎虾/.test(cleaned) &&
+        !/(已簽收|已签收|運輸中|运输中|深圳|廣州|北京|上海|快遞|快递|物流|電話|电话|收货|送至|订单编号)/.test(cleaned)
       ) {
-        productName = cleaned.substring(0, 60);
+        productName = cleaned.substring(0, 80);
         console.log('智能提取商品名稱:', productName);
+        break;
+      }
+    }
+  }
+  
+  // 最後嘗試：查找包含商品特徵的較長文本行
+  if (!productName) {
+    const lines = text.split(/[\n\r]+/).filter(line => {
+      const len = line.trim().length;
+      return len >= 10 && len <= 100;
+    });
+    
+    for (const line of lines) {
+      const cleaned = line.trim();
+      // 包含中文且不是地址、狀態信息
+      if (
+        /[\u4e00-\u9fa5]{5,}/.test(cleaned) &&
+        !/(省|市|区|县|街道|路|号|楼|单元|已签收|运输中|快递|电话|收货人|送至|订单)/.test(cleaned) &&
+        !/^\d+$/.test(cleaned)  // 不是純數字
+      ) {
+        productName = cleaned.substring(0, 80);
+        console.log('最後嘗試提取商品名稱:', productName);
         break;
       }
     }
