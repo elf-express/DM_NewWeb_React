@@ -34,27 +34,27 @@ export default function BatchImageUploader({
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      setProgress({ current: i + 1, total: files.length });
 
       try {
         // 讀取圖片
-        const imageData = await readFileAsDataURL(file);
+        const imageDataUrl = await readFileAsDataURL(file);
         
-        // OCR 識別
-        const extractedData = await extractDataFromImage(imageData, () => {});
+        // OCR 識別（可能返回多個訂單）
+        const extractedDataArray = await extractDataFromImage(imageDataUrl);
         
-        // 創建訂單
-        const order: OrderData = {
-          id: `order-${Date.now()}-${i}`,
-          productName: extractedData.productName,
-          quantity: extractedData.quantity,
-          price: extractedData.price,
-          trackingNumber: extractedData.trackingNumber,
-          platform: extractedData.platform,
-          imageUrl: imageData,
-        };
+        setProgress({ current: i + 1, total: files.length });
 
-        extractedOrders.push(order);
+        // 處理一張圖片可能有多個訂單的情況
+        extractedDataArray.forEach((extractedData, orderIndex) => {
+          const order: OrderData = {
+            id: `order-${Date.now()}-${i}-${orderIndex}`,
+            ...extractedData,
+            imageUrl: imageDataUrl,
+          };
+          extractedOrders.push(order);
+        });
+
+        console.log(`圖片 ${file.name} 識別到 ${extractedDataArray.length} 個訂單`);
       } catch (err) {
         console.error(`處理圖片 ${file.name} 失敗:`, err);
       }

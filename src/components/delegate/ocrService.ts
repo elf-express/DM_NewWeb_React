@@ -12,12 +12,12 @@ export interface ExtractedData {
 }
 
 /**
- * 從圖片中提取數據
+ * 從圖片中提取數據（支持一張圖片多個訂單）
  */
 export async function extractDataFromImage(
   imageData: string,
   onProgress?: (progress: number) => void
-): Promise<ExtractedData> {
+): Promise<ExtractedData[]> {
   try {
     // 使用 Tesseract.js 進行 OCR 識別
     const result = await Tesseract.recognize(
@@ -37,10 +37,10 @@ export async function extractDataFromImage(
     console.log(text);
     console.log('===================================');
 
-    // 解析識別出的文本
-    const extractedData = parseOCRText(text);
+    // 解析識別出的文本，支持多個訂單
+    const orders = parseOCRTextMultiple(text);
 
-    return extractedData;
+    return orders;
   } catch (error) {
     console.error('OCR Error:', error);
     throw new Error('OCR 識別失敗');
@@ -273,6 +273,66 @@ function parseOCRText(text: string): ExtractedData {
 
   console.log('最終識別結果:', result);
   return result;
+}
+
+/**
+ * 從文本中解析多個訂單（支持一張圖多個訂單）
+ */
+function parseOCRTextMultiple(text: string): ExtractedData[] {
+  console.log('開始解析多訂單文本');
+  
+  // 嘗試識別所有快遞單號（12-15位數字）
+  const trackingNumbers: string[] = [];
+  const trackingMatches = text.matchAll(/\b(\d{12,15})\b/g);
+  for (const match of trackingMatches) {
+    const num = match[1];
+    if (!trackingNumbers.includes(num)) {
+      trackingNumbers.push(num);
+      console.log('找到快遞單號:', num);
+    }
+  }
+  
+  // 如果只有一個或沒有快遞單號，使用舊邏輯
+  if (trackingNumbers.length <= 1) {
+    const singleOrder = parseOCRText(text);
+    return [singleOrder];
+  }
+  
+  // 多個快遞單號：按單號分割文本
+  console.log(`檢測到 ${trackingNumbers.length} 個訂單`);
+  const orders: ExtractedData[] = [];
+  
+  // 將文本按快遞單號分段
+  const segments: { trackingNumber: string; text: string }[] = [];
+  let lastIndex = 0;
+  
+  for (const trackingNumber of trackingNumbers) {
+    const index = text.indexOf(trackingNumber, lastIndex);
+    if (index !== -1) {
+      // 提取該快遞單號前後的文本（前後各200字）
+      const start = Math.max(0, index - 200);
+      const end = Math.min(text.length, index + trackingNumber.length + 400);
+      const segment = text.substring(start, end);
+      
+      segments.push({
+        trackingNumber,
+        text: segment
+      });
+      
+      lastIndex = index + trackingNumber.length;
+    }
+  }
+  
+  // 為每個分段解析商品信息
+  for (const segment of segments) {
+    const orderData = parseOCRText(segment.text);
+    // 使用檢測到的快遞單號覆蓋
+    orderData.trackingNumber = segment.trackingNumber;
+    orders.push(orderData);
+    console.log(`訂單 ${segment.trackingNumber}:`, orderData.productName);
+  }
+  
+  return orders;
 }
 
 /**
