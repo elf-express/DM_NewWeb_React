@@ -7,10 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/src
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
-import type { ExtractedData } from './DelegatePage';
+import type { OrderData } from './DelegatePage';
 
 interface DelegateFormProps {
-  extractedData: ExtractedData | null;
+  extractedData: Omit<OrderData, 'id' | 'imageUrl'> | null;
   onReset: () => void;
 }
 
