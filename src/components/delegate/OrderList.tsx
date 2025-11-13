@@ -205,7 +205,6 @@ export default function OrderList({
                             <Input
                               value={editForm.productName || ''}
                               onChange={(e) => setEditForm({ ...editForm, productName: e.target.value })}
-                              size="sm"
                             />
                           </div>
                           <div>
@@ -213,7 +212,6 @@ export default function OrderList({
                             <Input
                               value={editForm.trackingNumber || ''}
                               onChange={(e) => setEditForm({ ...editForm, trackingNumber: e.target.value.toUpperCase() })}
-                              size="sm"
                               className="font-mono"
                             />
                           </div>
@@ -223,7 +221,6 @@ export default function OrderList({
                               <Input
                                 value={editForm.platform || ''}
                                 onChange={(e) => setEditForm({ ...editForm, platform: e.target.value })}
-                                size="sm"
                               />
                             </div>
                             <div>
@@ -232,7 +229,6 @@ export default function OrderList({
                                 type="number"
                                 value={editForm.quantity || 1}
                                 onChange={(e) => setEditForm({ ...editForm, quantity: parseInt(e.target.value) || 1 })}
-                                size="sm"
                               />
                             </div>
                             <div>
@@ -242,7 +238,6 @@ export default function OrderList({
                                 step="0.01"
                                 value={editForm.price || 0}
                                 onChange={(e) => setEditForm({ ...editForm, price: parseFloat(e.target.value) || 0 })}
-                                size="sm"
                               />
                             </div>
                           </div>
