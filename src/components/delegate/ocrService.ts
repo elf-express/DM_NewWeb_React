@@ -137,20 +137,25 @@ function parseOCRText(text: string): ExtractedData {
     const match = text.match(pattern);
     if (match && match[1]) {
       let candidate = match[1].trim();
-      // 清理特殊字符和多餘空格
+      
+      // 清理特殊字符和多餘空格（OCR可能會在字之間加空格）
       candidate = candidate
         .replace(/[【】\[\]]/g, '')
-        .replace(/\s+/g, ' ')
+        .replace(/\s+/g, '')  // 移除所有空格，OCR經常在中文字之間加空格
         .trim();
       
       // 過濾掉一些無用信息
       if (
         candidate.length >= 5 &&
-        candidate.length <= 80 &&
         !candidate.includes('已簽收') &&
+        !candidate.includes('已签收') &&
         !candidate.includes('運輸中') &&
+        !candidate.includes('运输中') &&
         !candidate.includes('深圳市') &&
-        !candidate.includes('電話')
+        !candidate.includes('電話') &&
+        !candidate.includes('电话') &&
+        !candidate.includes('收货人') &&
+        !candidate.includes('送至')
       ) {
         productName = candidate;
         console.log('找到商品名稱:', productName);
@@ -164,13 +169,15 @@ function parseOCRText(text: string): ExtractedData {
     // 查找包含常見商品關鍵字的行
     const lines = text.split(/[\n\r]+/).filter(line => line.trim().length > 5);
     for (const line of lines) {
-      const cleaned = line.trim();
+      let cleaned = line.trim();
       // 跳過狀態、地址等信息
       if (
         /布鲁可|奥特|积木|模具|人偶|玩具|手办|压肉器|饼模|不锈钢|帆布|馬甲|按摩|定制|手提|防水|logo|包|袋|衣|鞋|器|機|膜|套|特曼|超人|圆形|汉堡|神器|辅食|煎虾/.test(cleaned) &&
         !/(已簽收|已签收|運輸中|运输中|深圳|廣州|北京|上海|快遞|快递|物流|電話|电话|收货|送至|订单编号)/.test(cleaned)
       ) {
-        productName = cleaned.substring(0, 80);
+        // 移除所有空格
+        cleaned = cleaned.replace(/\s+/g, '');
+        productName = cleaned.substring(0, 100);
         console.log('智能提取商品名稱:', productName);
         break;
       }
@@ -181,18 +188,20 @@ function parseOCRText(text: string): ExtractedData {
   if (!productName) {
     const lines = text.split(/[\n\r]+/).filter(line => {
       const len = line.trim().length;
-      return len >= 10 && len <= 100;
+      return len >= 10 && len <= 200;
     });
     
     for (const line of lines) {
-      const cleaned = line.trim();
+      let cleaned = line.trim();
       // 包含中文且不是地址、狀態信息
       if (
         /[\u4e00-\u9fa5]{5,}/.test(cleaned) &&
         !/(省|市|区|县|街道|路|号|楼|单元|已签收|运输中|快递|电话|收货人|送至|订单)/.test(cleaned) &&
         !/^\d+$/.test(cleaned)  // 不是純數字
       ) {
-        productName = cleaned.substring(0, 80);
+        // 移除所有空格
+        cleaned = cleaned.replace(/\s+/g, '');
+        productName = cleaned.substring(0, 100);
         console.log('最後嘗試提取商品名稱:', productName);
         break;
       }
