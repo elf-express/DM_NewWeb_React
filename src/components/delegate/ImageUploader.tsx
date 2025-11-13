@@ -42,17 +42,22 @@ export default function ImageUploader({
     
     reader.onload = async (e) => {
       const imageData = e.target?.result as string;
-      setImage(imageData);
       setIsProcessing(true);
       setProgress(0);
 
       try {
         // 執行 OCR 識別
-        const extractedData = await extractDataFromImage(imageData, (prog) => {
-          setProgress(prog);
+        const extractedDataArray = await extractDataFromImage(imageDataUrl, (progress) => {
+          setProgress(progress);
         });
         
-        onExtractComplete(extractedData);
+        // 單張圖片上傳：如果識別到多個訂單，只取第一個
+        // （多訂單場景應使用 BatchImageUploader）
+        if (extractedDataArray.length > 0) {
+          onExtractComplete(extractedDataArray[0]);
+        } else {
+          throw new Error('未識別到任何訂單信息');
+        }
         setProgress(100);
       } catch (err) {
         console.error('OCR Error:', err);
