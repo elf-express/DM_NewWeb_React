@@ -100,8 +100,8 @@ export default function OrderList({
                 <div className="flex gap-4">
                   {/* 訂單信息 */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1">
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <Badge variant="outline" className="text-xs">
                             #{index + 1}
@@ -112,27 +112,28 @@ export default function OrderList({
                         </div>
                         <h3 className="font-medium truncate">{order.productName}</h3>
                       </div>
-                      <div className="flex gap-1">
-                        {!isEditing && (
-                          <>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleStartEdit(order)}
-                            >
-                              <Edit2 className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => onDeleteOrder(order.id)}
-                              className="text-destructive hover:text-destructive"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </>
-                        )}
-                      </div>
+                      {/* 操作按鈕 - 確保始終可見 */}
+                      {!isEditing && (
+                        <div className="flex gap-1 flex-shrink-0">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleStartEdit(order)}
+                            title={t('delegate.edit')}
+                          >
+                            <Edit2 className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => onDeleteOrder(order.id)}
+                            className="text-destructive hover:text-destructive"
+                            title={t('delegate.delete')}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
                     </div>
 
                     {/* 簡要信息 */}
