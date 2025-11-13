@@ -4,8 +4,9 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 開發環境不使用 basePath 和 output: export
-  // 部署時會自動切換到 next.config.production.mjs
+  output: 'export',
+  basePath: '/DM_NewWeb_React',
+  assetPrefix: '/DM_NewWeb_React',
   images: {
     unoptimized: true
   },

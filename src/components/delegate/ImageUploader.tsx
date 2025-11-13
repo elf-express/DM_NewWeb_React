@@ -7,10 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/src
 import { Button } from '@/src/components/ui/button';
 import { cn } from '@/src/utils/cn';
 import { extractDataFromImage } from './ocrService';
-import type { ExtractedData } from './DelegatePage';
+import type { OrderData } from './DelegatePage';
 
 interface ImageUploaderProps {
-  onExtractComplete: (data: ExtractedData) => void;
+  onExtractComplete: (data: Omit<OrderData, 'id' | 'imageUrl'>) => void;
   isProcessing: boolean;
   setIsProcessing: (processing: boolean) => void;
 }
