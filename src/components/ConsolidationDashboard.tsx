@@ -194,6 +194,14 @@ export default function ConsolidationDashboard() {
               <Card>
                 <CardHeader className="pb-2"><CardTitle className="text-base">{t('quickActions.title')}</CardTitle></CardHeader>
                 <CardContent className="grid grid-cols-2 gap-3">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start gap-2"
+                    onClick={() => router.push(`/${locale}/delegate`)}
+                  >
+                    <ScanSearch className="h-4 w-4" />
+                    {t('quickActions.delegate')}
+                  </Button>
                   <QuickAction icon={UploadCloud} label={t('quickActions.declare')}/>
                   <QuickAction icon={Truck} label={t('quickActions.arrange')}/>
                   <QuickAction icon={CreditCard} label={t('quickActions.payment')}/>
