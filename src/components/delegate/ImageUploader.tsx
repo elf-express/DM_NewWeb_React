@@ -47,13 +47,14 @@ export default function ImageUploader({
 
       try {
         // 執行 OCR 識別
-        const extractedDataArray = await extractDataFromImage(imageDataUrl, (progress) => {
+        const extractedDataArray = await extractDataFromImage(imageData, (progress) => {
           setProgress(progress);
         });
         
         // 單張圖片上傳：如果識別到多個訂單，只取第一個
         // （多訂單場景應使用 BatchImageUploader）
         if (extractedDataArray.length > 0) {
+          setImage(imageData);
           onExtractComplete(extractedDataArray[0]);
         } else {
           throw new Error('未識別到任何訂單信息');
