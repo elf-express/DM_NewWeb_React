@@ -1,5 +1,15 @@
 import Tesseract from 'tesseract.js';
-import type { ExtractedData } from './DelegatePage';
+
+/**
+ * OCR 識別後的數據結構
+ */
+export interface ExtractedData {
+  productName: string;
+  quantity: number;
+  price: number;
+  trackingNumber: string;
+  platform: string;
+}
 
 /**
  * 從圖片中提取數據

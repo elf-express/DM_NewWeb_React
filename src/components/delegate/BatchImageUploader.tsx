@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Upload, Loader2, CheckCircle2, XCircle, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/src/components/ui/button';
 import { cn } from '@/src/utils/cn';
-import { extractDataFromImage } from './ocrService';
+import { extractDataFromImage, type ExtractedData } from './ocrService';
 import type { OrderData } from './DelegatePage';
 
 interface BatchImageUploaderProps {
