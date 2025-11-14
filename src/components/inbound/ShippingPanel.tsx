@@ -203,24 +203,22 @@ export default function ShippingPanel({ selectedPackages, onClearSelection }: Sh
                 >
                   <Checkbox
                     checked={isSelected}
-                    onCheckedChange={() => toggleService(service.id)}
                     id={service.id}
+                    className="pointer-events-none"
                   />
-                  <div className="flex-1">
-                    <Label htmlFor={service.id} className="cursor-pointer">
-                      <div className="flex items-center justify-between mb-1">
-                        <div className="flex items-center gap-2">
-                          <span>{service.icon}</span>
-                          <span className="font-medium text-sm">{service.name}</span>
-                        </div>
-                        <span className="text-sm font-semibold">
-                          +NT${serviceCost}
-                        </span>
+                  <div className="flex-1 cursor-pointer">
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-2">
+                        <span>{service.icon}</span>
+                        <span className="font-medium text-sm">{service.name}</span>
                       </div>
-                      <div className="text-xs text-muted-foreground">
-                        {service.desc}
-                      </div>
-                    </Label>
+                      <span className="text-sm font-semibold">
+                        +NT${serviceCost}
+                      </span>
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {service.desc}
+                    </div>
                   </div>
                 </div>
               );
