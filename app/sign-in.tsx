@@ -3,7 +3,6 @@
 type Props = {
   onSignIn: () => Promise<void>;
 };
-
 const SignIn = ({ onSignIn }: Props) => {
   return (
     <button
