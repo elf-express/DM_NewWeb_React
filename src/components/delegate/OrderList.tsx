@@ -140,13 +140,16 @@ export default function OrderList({
                     {!isExpanded && !isEditing && (
                       <div className="grid grid-cols-3 gap-3 text-sm text-muted-foreground">
                         <div>
+                          <span className="text-muted-foreground">{t('delegate.trackingNumber')}:</span>
                           <span className="font-medium text-foreground">{order.trackingNumber || t('delegate.notRecognized')}</span>
                         </div>
                         <div>
-                          {t('delegate.quantity')}: <span className="font-medium text-foreground">{order.quantity}</span>
+                          <span className="text-muted-foreground">{t('delegate.quantity')}:</span>
+                          <span className="font-medium text-foreground">{order.quantity ?? '-'}</span>
                         </div>
                         <div>
-                          ¥<span className="font-medium text-foreground">{order.price}</span>
+                          <span className="text-muted-foreground">{t('delegate.price')}:</span>
+                          <span className="font-medium text-foreground">¥{order.price ?? '-'}</span>
                         </div>
                       </div>
                     )}
@@ -187,11 +190,15 @@ export default function OrderList({
                           </div>
                           <div>
                             <span className="text-muted-foreground">{t('delegate.quantity')}:</span>
-                            <p className="font-medium mt-1">{order.quantity}</p>
+                            <p className="font-medium mt-1">{order.quantity ?? '-'}</p>
                           </div>
                           <div>
                             <span className="text-muted-foreground">{t('delegate.price')}:</span>
-                            <p className="font-medium mt-1">¥{order.price}</p>
+                            <p className="font-medium mt-1">¥{order.price ?? '-'}</p>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">{t('delegate.type')}:</span>
+                            <p className="font-medium mt-1">{order.type ?? '-'}</p>
                           </div>
                         </div>
                       </div>

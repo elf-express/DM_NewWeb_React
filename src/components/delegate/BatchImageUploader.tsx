@@ -38,9 +38,25 @@ export default function BatchImageUploader({
       try {
         // 讀取圖片
         const imageDataUrl = await readFileAsDataURL(file);
+
+        const response = await fetch("https://newapptest.elf.com.tw/api/ocr/image", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imageDataUrl }),
+        });
+
+        const result = await response.json();
+
+        console.log("後端回傳的完整 JSON result:", result);
+
+        const extractedDataArray: ExtractedData[] = result.orders;
+
+
+
+
         
         // OCR 識別（可能返回多個訂單）
-        const extractedDataArray = await extractDataFromImage(imageDataUrl);
+        //const extractedDataArray = await extractDataFromImage(imageDataUrl);
         
         setProgress({ current: i + 1, total: files.length });
 

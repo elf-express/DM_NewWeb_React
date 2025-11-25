@@ -19,6 +19,7 @@ export interface OrderData {
   trackingNumber: string;
   platform: string;
   imageUrl: string;
+  type: string;
 }
 
 export default function DelegatePage() {

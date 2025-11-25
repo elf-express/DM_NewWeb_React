@@ -209,7 +209,10 @@
     "notRecognized": "未識別",
     "manualAdd": "手動新增",
     "manualAddDesc": "手動填寫訂單資料，不需要上傳圖片",
-    "addToList": "加入列表"
+    "addToList": "加入列表",
+    "edit": "編輯",
+    "delete": "刪除",
+    "type": "報關類別"
   },
   "themes": {
     "default": "經典藍",
