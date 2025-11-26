@@ -130,12 +130,16 @@ export default function ConsolidationDashboard() {
                   <CardTitle className="text-lg">{t('overview.title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4 md:grid-cols-4">
+
                   <OverviewItem
                     icon={Package}
-                    title={t('overview.notInbound')}
-                    value={notInboundPackages.length}
+                    title={t('quickActions.delegate')}
+                    value={`${t('overview.notInbound')} : ${notInboundPackages.length}`}
                     tip={t('overview.waitingShipment')}
-                    onClick={() => setIsNotInboundOpen(true)}
+                    onClick={() => {
+                      // 導航到委託集貨頁面
+                      router.push(`/${locale}/delegate?showNotInbound=true`);
+                    }}
                     clickable
                   />
                   <OverviewItem
@@ -161,14 +165,14 @@ export default function ConsolidationDashboard() {
               <Card>
                 <CardHeader className="pb-2"><CardTitle className="text-base">{t('quickActions.title')}</CardTitle></CardHeader>
                 <CardContent className="grid grid-cols-2 gap-3">
-                  <Button
+                  {/* <Button
                     variant="outline"
                     className="w-full justify-start gap-2"
                     onClick={() => router.push(`/${locale}/delegate`)}
                   >
                     <ScanSearch className="h-4 w-4" />
                     {t('quickActions.delegate')}
-                  </Button>
+                  </Button> */}
                   <QuickAction icon={UploadCloud} label={t('quickActions.declare')} />
                   <QuickAction icon={Truck} label={t('quickActions.arrange')} />
                   <QuickAction icon={CreditCard} label={t('quickActions.payment')} />
@@ -331,11 +335,11 @@ export default function ConsolidationDashboard() {
             {/* 客服中心 */}
             <CustomerServiceCard />
           </div>
-        </div>
-      </main>
+        </div >
+      </main >
 
       {/* 未入庫包裹抽屜 */}
-      <Sheet open={isNotInboundOpen} onOpenChange={setIsNotInboundOpen}>
+      < Sheet open={isNotInboundOpen} onOpenChange={setIsNotInboundOpen} >
         <SheetContent className="w-full sm:max-w-lg">
           <SheetHeader>
             <SheetTitle className="flex items-center gap-2">
@@ -405,15 +409,15 @@ export default function ConsolidationDashboard() {
             </div>
           </div>
         </SheetContent>
-      </Sheet>
-    </div>
+      </Sheet >
+    </div >
   );
 }
 
 function OverviewItem({ icon: Icon, title, value, tip, prefix, onClick, clickable }: {
   icon: any;
   title: string;
-  value: number;
+  value: string | number;
   tip?: string;
   prefix?: string;
   onClick?: () => void;

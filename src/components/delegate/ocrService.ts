@@ -9,6 +9,7 @@ export interface ExtractedData {
   price: number;
   trackingNumber: string;
   platform: string;
+  type?: string; // 報關類別
 }
 
 /**
@@ -76,16 +77,16 @@ function parseOCRText(text: string): ExtractedData {
     // 1. 明確標註的商品名稱
     /商品名[稱称][:：]\s*(.+?)(?:\n|$)/i,
     /品名[:：]\s*(.+?)(?:\n|$)/i,
-    
+
     // 2. 【優惠價】或其他標籤開頭的完整商品名（貪婪匹配到下一行或結尾）
     /【[^】]+】\s*(.{6,150}?)(?=\n\n|\n[¥￥]|$)/is,
-    
+
     // 3. 天貓/淘寶格式：店鋪名稱下方的商品標題
     /(?:天猫|淘宝|京东)\s+[^\n]+\n\s*([^\n¥]{8,100}?)(?:\s*¥|\s*x\d|群星版|$)/i,
-    
+
     // 4. 價格前的商品名（允許更長的名稱，包含多行）
     /([^\n¥]{15,150}?)\s*(?:¥|￥)\s*[\d,]+/is,
-    
+
     // 5. 包含數量描述的商品名（如 16款23cm奧特曼）
     /(\d+款[^\n¥]{5,80}?)\s*(?:¥|可指定|送小|$)/i,
   ];
@@ -139,13 +140,13 @@ function parseOCRText(text: string): ExtractedData {
     const match = text.match(pattern);
     if (match && match[1]) {
       let candidate = match[1].trim();
-      
+
       // 清理特殊字符和多餘空格（OCR可能會在字之間加空格）
       candidate = candidate
         .replace(/[【】\[\]]/g, '')
         .replace(/\s+/g, '')  // 移除所有空格，OCR經常在中文字之間加空格
         .trim();
-      
+
       // 過濾掉一些無用信息
       if (
         candidate.length >= 5 &&
@@ -185,14 +186,14 @@ function parseOCRText(text: string): ExtractedData {
       }
     }
   }
-  
+
   // 最後嘗試：查找包含商品特徵的較長文本行
   if (!productName) {
     const lines = text.split(/[\n\r]+/).filter(line => {
       const len = line.trim().length;
       return len >= 10 && len <= 200;
     });
-    
+
     for (const line of lines) {
       let cleaned = line.trim();
       // 包含中文且不是地址、狀態信息
@@ -236,7 +237,7 @@ function parseOCRText(text: string): ExtractedData {
       }
     }
   }
-  
+
   // 優先選擇較小的價格（通常是單價而非總價）
   if (allPriceMatches.length > 0) {
     // 排序並選擇中位數或最小值
@@ -280,7 +281,7 @@ function parseOCRText(text: string): ExtractedData {
  */
 function parseOCRTextMultiple(text: string): ExtractedData[] {
   console.log('開始解析多訂單文本');
-  
+
   // 嘗試識別所有快遞單號（12-15位數字）
   const trackingNumbers: string[] = [];
   const trackingMatches = text.matchAll(/\b(\d{12,15})\b/g);
@@ -291,21 +292,21 @@ function parseOCRTextMultiple(text: string): ExtractedData[] {
       console.log('找到快遞單號:', num);
     }
   }
-  
+
   // 如果只有一個或沒有快遞單號，使用舊邏輯
   if (trackingNumbers.length <= 1) {
     const singleOrder = parseOCRText(text);
     return [singleOrder];
   }
-  
+
   // 多個快遞單號：按單號分割文本
   console.log(`檢測到 ${trackingNumbers.length} 個訂單`);
   const orders: ExtractedData[] = [];
-  
+
   // 將文本按快遞單號分段
   const segments: { trackingNumber: string; text: string }[] = [];
   let lastIndex = 0;
-  
+
   for (const trackingNumber of trackingNumbers) {
     const index = text.indexOf(trackingNumber, lastIndex);
     if (index !== -1) {
@@ -313,16 +314,16 @@ function parseOCRTextMultiple(text: string): ExtractedData[] {
       const start = Math.max(0, index - 200);
       const end = Math.min(text.length, index + trackingNumber.length + 400);
       const segment = text.substring(start, end);
-      
+
       segments.push({
         trackingNumber,
         text: segment
       });
-      
+
       lastIndex = index + trackingNumber.length;
     }
   }
-  
+
   // 為每個分段解析商品信息
   for (const segment of segments) {
     const orderData = parseOCRText(segment.text);
@@ -331,7 +332,7 @@ function parseOCRTextMultiple(text: string): ExtractedData[] {
     orders.push(orderData);
     console.log(`訂單 ${segment.trackingNumber}:`, orderData.productName);
   }
-  
+
   return orders;
 }
 
@@ -341,11 +342,11 @@ function parseOCRTextMultiple(text: string): ExtractedData[] {
 function formatTrackingNumber(raw: string): string {
   // 移除所有空格和特殊字符
   let cleaned = raw.replace(/[^A-Z0-9]/gi, '').toUpperCase();
-  
+
   // 限制長度
   if (cleaned.length > 30) {
     cleaned = cleaned.substring(0, 30);
   }
-  
+
   return cleaned;
 }

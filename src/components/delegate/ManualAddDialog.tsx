@@ -23,6 +23,7 @@ interface ManualAddDialogProps {
     price: number;
     trackingNumber: string;
     platform: string;
+    type: string;
   }) => void;
 }
 
@@ -34,11 +35,12 @@ export default function ManualAddDialog({ open, onClose, onAdd }: ManualAddDialo
     price: 0,
     trackingNumber: '',
     platform: '淘寶',
+    type: '一般',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // 驗證必填欄位
     if (!formData.productName || !formData.trackingNumber) {
       alert(t('delegate.errorRequired'));
@@ -46,7 +48,7 @@ export default function ManualAddDialog({ open, onClose, onAdd }: ManualAddDialo
     }
 
     onAdd(formData);
-    
+
     // 重置表單
     setFormData({
       productName: '',
@@ -54,6 +56,7 @@ export default function ManualAddDialog({ open, onClose, onAdd }: ManualAddDialo
       price: 0,
       trackingNumber: '',
       platform: '淘寶',
+      type: '一般',
     });
   };
 
@@ -66,12 +69,13 @@ export default function ManualAddDialog({ open, onClose, onAdd }: ManualAddDialo
       price: 0,
       trackingNumber: '',
       platform: '淘寶',
+      type: '一般',
     });
   };
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Plus className="h-5 w-5" />
@@ -82,7 +86,7 @@ export default function ManualAddDialog({ open, onClose, onAdd }: ManualAddDialo
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4 pt-4">
+        <form onSubmit={handleSubmit} className="space-y-4 pt-4 overflow-y-auto flex-1 px-4">
           {/* 商品名稱 */}
           <div className="space-y-2">
             <Label htmlFor="productName">
@@ -121,6 +125,17 @@ export default function ManualAddDialog({ open, onClose, onAdd }: ManualAddDialo
               value={formData.platform}
               onChange={(e) => setFormData({ ...formData, platform: e.target.value })}
               placeholder={t('delegate.platformPlaceholder')}
+            />
+          </div>
+
+          {/* 報關類別 */}
+          <div className="space-y-2">
+            <Label htmlFor="type">{t('delegate.type')}</Label>
+            <Input
+              id="type"
+              value={formData.type}
+              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              placeholder="一般"
             />
           </div>
 

@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Upload, Loader2, CheckCircle2, XCircle, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/src/components/ui/button';
 import { cn } from '@/src/utils/cn';
+import { api } from '@/src/service/api_service';
 import { extractDataFromImage, type ExtractedData } from './ocrService';
 import type { OrderData } from './DelegatePage';
 
@@ -39,13 +40,7 @@ export default function BatchImageUploader({
         // 讀取圖片
         const imageDataUrl = await readFileAsDataURL(file);
 
-        const response = await fetch("https://newapptest.elf.com.tw/api/ocr/image", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ imageDataUrl }),
-        });
-
-        const result = await response.json();
+        const result = await api.ocrImage(imageDataUrl);
 
         console.log("後端回傳的完整 JSON result:", result);
 
@@ -54,18 +49,25 @@ export default function BatchImageUploader({
 
 
 
-        
+
         // OCR 識別（可能返回多個訂單）
         //const extractedDataArray = await extractDataFromImage(imageDataUrl);
-        
+
         setProgress({ current: i + 1, total: files.length });
 
         // 處理一張圖片可能有多個訂單的情況
         extractedDataArray.forEach((extractedData, orderIndex) => {
+          // 檢查必要欄位：商品名稱不是「未識別」、快遞單號非空、報關類別非空
+          const hasError = extractedData.productName === '未識別' ||
+            !extractedData.trackingNumber ||
+            !extractedData.type;
+
           const order: OrderData = {
             id: `order-${Date.now()}-${i}-${orderIndex}`,
             ...extractedData,
             imageUrl: imageDataUrl,
+            type: extractedData.type || '一般', // 預設類型
+            hasError, // 標記是否有錯誤
           };
           extractedOrders.push(order);
         });

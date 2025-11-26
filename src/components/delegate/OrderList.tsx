@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Package, Edit2, Trash2, Check, X, ChevronDown, ChevronUp, Send } from 'lucide-react';
+import { Package, Edit2, Trash2, Check, X, Send } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
 import { Badge } from '@/src/components/ui/badge';
+import { cn } from '@/src/utils/cn';
 import type { OrderData } from './DelegatePage';
 
 interface OrderListProps {
@@ -27,18 +28,23 @@ export default function OrderList({
 }: OrderListProps) {
   const t = useTranslations();
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+
   const [editForm, setEditForm] = useState<Partial<OrderData>>({});
 
   const handleStartEdit = (order: OrderData) => {
     setEditingId(order.id);
     setEditForm(order);
-    setExpandedId(order.id);
+
   };
 
   const handleSaveEdit = () => {
     if (editingId && editForm) {
-      onUpdateOrder(editingId, editForm);
+      // 重新檢查錯誤：商品名稱不是「未識別」、快遞單號非空、報關類別非空
+      const hasError = editForm.productName === '未識別' ||
+        !editForm.trackingNumber ||
+        !editForm.type;
+
+      onUpdateOrder(editingId, { ...editForm, hasError });
       setEditingId(null);
       setEditForm({});
     }
@@ -47,10 +53,6 @@ export default function OrderList({
   const handleCancelEdit = () => {
     setEditingId(null);
     setEditForm({});
-  };
-
-  const toggleExpand = (id: string) => {
-    setExpandedId(expandedId === id ? null : id);
   };
 
   if (orders.length === 0) {
@@ -92,10 +94,10 @@ export default function OrderList({
       <div className="space-y-4">
         {orders.map((order, index) => {
           const isEditing = editingId === order.id;
-          const isExpanded = expandedId === order.id;
+
 
           return (
-            <Card key={order.id} className="overflow-hidden">
+            <Card key={order.id} className={cn("overflow-hidden", order.hasError && "border-2 border-red-500")}>
               <CardContent className="p-4">
                 <div className="flex gap-4">
                   {/* 訂單信息 */}
@@ -110,7 +112,9 @@ export default function OrderList({
                             {order.platform}
                           </Badge>
                         </div>
-                        <h3 className="font-medium truncate">{order.productName}</h3>
+                        <h3 className="font-medium" title={order.productName}>
+                          {order.productName.length > 10 ? `${order.productName.substring(0, 10)}...` : order.productName}
+                        </h3>
                       </div>
                       {/* 操作按鈕 - 確保始終可見 */}
                       {!isEditing && (
@@ -137,69 +141,27 @@ export default function OrderList({
                     </div>
 
                     {/* 簡要信息 */}
-                    {!isExpanded && !isEditing && (
-                      <div className="grid grid-cols-3 gap-3 text-sm text-muted-foreground">
+                    {!isEditing && (
+                      <div className="grid gap-3 text-sm text-muted-foreground flex items-center" style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr' }}>
                         <div>
-                          <span className="text-muted-foreground">{t('delegate.trackingNumber')}:</span>
+                          <span className="text-muted-foreground font-bold">{t('delegate.trackingNumber')}: </span>
                           <span className="font-medium text-foreground">{order.trackingNumber || t('delegate.notRecognized')}</span>
                         </div>
                         <div>
-                          <span className="text-muted-foreground">{t('delegate.quantity')}:</span>
+                          <span className="text-muted-foreground font-bold">{t('delegate.quantity')}: </span>
                           <span className="font-medium text-foreground">{order.quantity ?? '-'}</span>
                         </div>
                         <div>
-                          <span className="text-muted-foreground">{t('delegate.price')}:</span>
+                          <span className="text-muted-foreground font-bold">{t('delegate.price')}: </span>
                           <span className="font-medium text-foreground">¥{order.price ?? '-'}</span>
                         </div>
-                      </div>
-                    )}
-
-                    {/* 展開按鈕 */}
-                    {!isEditing && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleExpand(order.id)}
-                        className="mt-2 w-full"
-                      >
-                        {isExpanded ? (
-                          <>
-                            <ChevronUp className="h-4 w-4 mr-1" />
-                            {t('delegate.collapse')}
-                          </>
-                        ) : (
-                          <>
-                            <ChevronDown className="h-4 w-4 mr-1" />
-                            {t('delegate.viewDetails')}
-                          </>
-                        )}
-                      </Button>
-                    )}
-
-                    {/* 詳細信息（展開時） */}
-                    {isExpanded && !isEditing && (
-                      <div className="mt-4 space-y-3 pt-4 border-t">
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div>
-                            <span className="text-muted-foreground">{t('delegate.trackingNumber')}:</span>
-                            <p className="font-mono font-medium mt-1">{order.trackingNumber || '-'}</p>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">{t('delegate.platform')}:</span>
-                            <p className="font-medium mt-1">{order.platform}</p>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">{t('delegate.quantity')}:</span>
-                            <p className="font-medium mt-1">{order.quantity ?? '-'}</p>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">{t('delegate.price')}:</span>
-                            <p className="font-medium mt-1">¥{order.price ?? '-'}</p>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">{t('delegate.type')}:</span>
-                            <p className="font-medium mt-1">{order.type ?? '-'}</p>
-                          </div>
+                        <div>
+                          <span className="text-muted-foreground font-bold">{t('delegate.platform')}: </span>
+                          <span className="font-medium text-foreground">{order.platform}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <span className="font-bold">{t('delegate.type')}: </span>
+                          <span className="font-medium text-foreground text-red-500 text-xl ml-1">{order.type ?? '-'}</span>
                         </div>
                       </div>
                     )}
@@ -223,7 +185,7 @@ export default function OrderList({
                               className="font-mono"
                             />
                           </div>
-                          <div className="grid grid-cols-3 gap-2">
+                          <div className="grid grid-cols-4 gap-2">
                             <div>
                               <Label className="text-xs">{t('delegate.platform')}</Label>
                               <Input
@@ -246,6 +208,13 @@ export default function OrderList({
                                 step="0.01"
                                 value={editForm.price || 0}
                                 onChange={(e) => setEditForm({ ...editForm, price: parseFloat(e.target.value) || 0 })}
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs">{t('delegate.type')}</Label>
+                              <Input
+                                value={editForm.type || ''}
+                                onChange={(e) => setEditForm({ ...editForm, type: e.target.value })}
                               />
                             </div>
                           </div>
